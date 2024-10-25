@@ -9,24 +9,24 @@ pipeline {
             }
         }
 
-        // Stage to build the Docker image
+        // Stage to build the Docker image with Buildx
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Enable Docker BuildKit
-                    sh 'DOCKER_BUILDKIT=1 docker build -t usama235/myimage1:latest .'
+                    // Build the Docker image using Buildx
+                    sh 'docker buildx build -t usama235/myimage1:latest . --push'
                 }
             }
         }
 
-        // Stage to push the Docker image to Docker Hub
+        // Stage to push the Docker image to Docker Hub (optional if using --push)
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // Log in to Docker Hub and push the image
+                    // Log in to Docker Hub and push the image (not needed if using --push)
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        // Push the image to Docker Hub
-                        sh 'docker push usama235/myimage1:latest'
+                        // Push the image to Docker Hub (only if not using --push in Buildx)
+                        // sh 'docker push usama235/myimage1:latest'
                     }
                 }
             }
