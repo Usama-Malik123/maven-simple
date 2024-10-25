@@ -9,12 +9,12 @@ pipeline {
             }
         }
 
-        // Stage to build the Docker image
+        // Stage to build the Docker image with BuildKit
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image using standard Docker build
-                    sh 'docker build -t usama235/myimage1:latest .'
+                    // Enable BuildKit and build the Docker image
+                    sh 'DOCKER_BUILDKIT=1 docker build -t usama235/myimage1:latest .'
                 }
             }
         }
