@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using Buildx
-                    sh 'docker buildx build -t usama235/myimage1:latest . --push'
+                    sh 'docker buildx build --tag usama235/myimage1:latest .'
                 }
             }
         }
