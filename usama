@@ -1,34 +1,46 @@
 pipeline {
-    agent any  // Run on any available Jenkins agent
+    agent any 
 
     stages {
-        // Stage to print a hello message
-        stage('Hello') {    
-            steps {
-                echo 'Hello, World!'    // Print "Hello, World!" in the console
-            }
-        }
-
-        // Stage to build the Docker image with BuildKit
-        stage('Build Docker Image') {
+        stage('Stage 1: Print Hello Jenkins') {
             steps {
                 script {
-                    // Enable BuildKit and build the Docker image
-                    sh 'DOCKER_BUILDKIT=1 docker build -t usama235/myimage1:latest .'
+                    // Step 1: Print a message
+                    echo 'Hello Jenkins'
                 }
             }
         }
-
-        // Optional: Stage to push the Docker image to Docker Hub
-        stage('Push to Docker Hub') {
+        
+        stage('Stage 2: Build Docker Image') {
             steps {
                 script {
-                    // Log in to Docker Hub and push the image
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        sh 'docker push usama235/myimage1:latest'
-                    }
+                    // Step 1: Build the Docker image
+                    // Using 'my-app' as the desired image name
+                    def imageName = 'my-app'
+                    // Build the Docker image using the Dockerfile in the repository
+                    sh "docker build -t ${imageName} ."
+                }
+            }
+        }
+        
+        stage('Stage 3: Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    // Step 1: Push the Docker image to Docker Hub
+                    def imageName = 'my-app'
+                    def dockerHubUsername = 'usama235'
+                    
+                    // Log in to Docker Hub (ensure Docker credentials are configured in Jenkins)
+                    sh "echo \$DOCKER_PASSWORD | docker login -u ${dockerHubUsername} --password-stdin"
+                    
+                    // Tag the Docker image with the Docker Hub username
+                    sh "docker tag ${imageName} ${dockerHubUsername}/${imageName}"
+                    
+                    // Push the Docker image to Docker Hub
+                    sh "docker push ${dockerHubUsername}/${imageName}"
                 }
             }
         }
     }
 }
+
