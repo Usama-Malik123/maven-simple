@@ -15,8 +15,7 @@ pipeline {
             steps {
                 script {
                     // Step 1: Build the Docker image
-                    // Using 'my-app' as the desired image name
-                    def imageName = 'my-app'
+                    def imageName = 'my-web-app' // Change to your desired image name
                     // Build the Docker image using the Dockerfile in the repository
                     sh "docker build -t ${imageName} ."
                 }
@@ -26,18 +25,20 @@ pipeline {
         stage('Stage 3: Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    // Step 1: Push the Docker image to Docker Hub
-                    def imageName = 'my-app'
+                    def imageName = 'my-web-app' // Ensure this matches the previous image name
                     def dockerHubUsername = 'usama235'
                     
-                    // Log in to Docker Hub (ensure Docker credentials are configured in Jenkins)
-                    sh "echo \$DOCKER_PASSWORD | docker login -u ${dockerHubUsername} --password-stdin"
-                    
-                    // Tag the Docker image with the Docker Hub username
-                    sh "docker tag ${imageName} ${dockerHubUsername}/${imageName}"
-                    
-                    // Push the Docker image to Docker Hub
-                    sh "docker push ${dockerHubUsername}/${imageName}"
+                    // Log in to Docker Hub using Jenkins credentials
+                    withCredentials([usernamePassword(credentialsId: 'd0f22417-9794-4738-ba87-d129b549ddd2', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        // Log in to Docker Hub
+                        sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin"
+                        
+                        // Tag the Docker image with the Docker Hub username
+                        sh "docker tag ${imageName} ${dockerHubUsername}/${imageName}"
+                        
+                        // Push the Docker image to Docker Hub
+                        sh "docker push ${dockerHubUsername}/${imageName}"
+                    }
                 }
             }
         }
