@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = 'us-east-1' // Change to your region if needed
+        ECR_REPOSITORY = 'my-web-app' // Change to your ECR repository name
+        AWS_ACCOUNT_ID = '014498632254' // Your AWS Account ID
+        AWS_CREDENTIALS = credentials('aws-ecr-credentials') // Jenkins credentials ID
+    }
+
+    stages {
+        stage('Print Hello Jenkins') {
+            steps {
+                echo 'Hello Jenkins'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t $ECR_REPOSITORY .'
+            }
+        }
+
+        stage('Login to ECR') {
+            steps {
+                sh '''
+                    $(aws ecr get-login --no-include-email --region $AWS_REGION --access-key $AWS_CREDENTIALS_USERNAME --secret-key $AWS_CREDENTIALS_PASSWORD)
+                '''
+            }
+        }
+
+        stage('Push Docker Image to ECR') {
+            steps {
+                sh '''
+                    docker tag $ECR_REPOSITORY:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+                    docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+                '''
+            }
+        }
+    }
+}
