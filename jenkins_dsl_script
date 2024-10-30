@@ -1,0 +1,22 @@
+// Creates three simple jobs with welcome messages
+
+job('Welcome-Job-1') {
+    description('This job displays a welcome message for Job 1')
+    steps {
+        shell('echo Welcome to Job 1!')
+    }
+}
+
+job('Welcome-Job-2') {
+    description('This job displays a welcome message for Job 2')
+    steps {
+        shell('echo Welcome to Job 2!')
+    }
+}
+
+job('Welcome-Job-3') {
+    description('This job displays a welcome message for Job 3')
+    steps {
+        shell('echo Welcome to Job 3!')
+    }
+}
