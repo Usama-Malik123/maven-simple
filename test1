@@ -1,0 +1,12 @@
+// Feature1 branch script - experimental feature validation
+println("Starting build for experimental feature (feature1 branch)")
+
+// Step 1: Code Analysis
+println("Running static code analysis...")
+// Add code analysis command here, e.g., `./gradlew check`
+
+// Step 2: Run Experimental Tests
+println("Executing experimental tests...")
+// Add experimental test command here, e.g., `./gradlew testExperimental`
+
+println("Experimental build for feature1 branch completed successfully!")
