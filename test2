@@ -1,0 +1,12 @@
+// Feature2 branch script - beta testing preparation
+println("Starting build for beta feature (feature2 branch)")
+
+// Step 1: Beta Code Linting
+println("Running beta-specific code linting...")
+// Add linting command here, e.g., `./gradlew lintBeta`
+
+// Step 2: Beta Testing
+println("Executing beta tests...")
+// Add beta test command here, e.g., `./gradlew testBeta`
+
+println("Beta build for feature2 branch completed successfully!")
