@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'us-east-1' // Change to your region if needed
-        ECR_REPOSITORY = 'my-web-app' // Change to your ECR repository name
-        AWS_ACCOUNT_ID = '014498632254' // Your AWS Account ID
+        AWS_REGION = 'ap-south-1' // Corrected to your actual region
+        ECR_REPOSITORY = 'my-web-app'
+        AWS_ACCOUNT_ID = '014498632254'
         AWS_CREDENTIALS = credentials('aws-ecr-credentials') // Jenkins credentials ID
     }
 
@@ -24,7 +24,7 @@ pipeline {
         stage('Login to ECR') {
             steps {
                 sh '''
-                    $(aws ecr get-login --no-include-email --region $AWS_REGION --access-key $AWS_CREDENTIALS_USERNAME --secret-key $AWS_CREDENTIALS_PASSWORD)
+                    aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
                 '''
             }
         }
