@@ -9,7 +9,7 @@ pipeline {
     }
 
     stages {
-        stage('Print Hello Jenkins') {
+        stage('Print Hello Jenkins usama') {
             steps {
                 echo 'Hello Jenkins'
             }
